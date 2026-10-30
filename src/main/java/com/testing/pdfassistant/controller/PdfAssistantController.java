@@ -1,5 +1,6 @@
 package com.testing.pdfassistant.controller;
 
+import com.testing.pdfassistant.dto.ProjectSummary;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
@@ -79,5 +80,17 @@ public class PdfAssistantController {
                 .user(question)
                 .call()
                 .content();
+    }
+
+    @GetMapping("/project-summary")
+    public ProjectSummary getProjectSummary(
+            @RequestParam(
+                    value = "project",
+                    defaultValue = "Super Loopi"
+            ) String project) {
+        return chatClient.prompt()
+                .user("Extrais les informations exactes du projet concernant : "+project)
+                .call()
+                .entity(ProjectSummary.class);
     }
 }
